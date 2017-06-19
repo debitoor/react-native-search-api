@@ -14,6 +14,7 @@
 @property (nonatomic, readonly) NSString *rctsa_contentDescription;
 @property (nonatomic, readonly) NSArray *rctsa_keywords;
 @property (nonatomic, readonly) NSURL *rctsa_thumbnailURL;
+@property (nonatomic, readonly) NSString *rctsa_thumbnailName;
 @property (nonatomic, readonly) NSString *rctsa_uniqueIdentifier;
 @property (nonatomic, readonly) NSString *rctsa_domain;
 @property (nonatomic, readonly) NSDictionary *rctsa_userInfo;

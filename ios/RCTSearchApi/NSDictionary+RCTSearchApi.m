@@ -33,6 +33,10 @@
     return self[@"uniqueIdentifier"];
 }
 
+- (NSString *)rctsa_thumbnailName {
+    return self[@"thumbnailName"];
+}
+
 - (NSString *)rctsa_domain {
     return self[@"domain"];
 }

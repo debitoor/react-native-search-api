@@ -172,10 +172,12 @@ RCT_EXPORT_METHOD(createUserActivity:(NSDictionary *)item resolve:(RCTPromiseRes
 
 - (CSSearchableItemAttributeSet *)contentAttributeSetFromItem:(NSDictionary *)item {
     CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeJSON];
+    UIImage *image = [UIImage imageNamed:item.rctsa_thumbnailName];
+    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(image)];
     attributeSet.title = item.rctsa_title;
     attributeSet.contentDescription = item.rctsa_contentDescription;
     attributeSet.keywords = item.rctsa_keywords;
-    attributeSet.thumbnailURL = item.rctsa_thumbnailURL;
+    attributeSet.thumbnailData = imageData;
     return attributeSet;
 }
 
