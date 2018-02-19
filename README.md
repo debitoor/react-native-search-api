@@ -45,6 +45,23 @@ componentWillUnmount() {
 }
 ```
 
+Generally you should be interested whether the app was started using the search, therefore consider using
+the following two methods:
+```js
+// For the spotlight item:
+SearchApi.getInitialSpotlightItem().then(result => {
+    if (result) {
+        console.log('Started with a spotlight item!')
+    }
+})
+// For the app history item:
+SearchApi.getInitialAppHistoryItem().then(result => {
+    if (result) {
+        console.log('Started with an app history item!')
+    }
+})
+```
+
 In order to create a new spotlight item, use `indexSpotlightItem` or `indexSpotlightItems`:
 ```js
 SearchApi.indexSpotlightItem(item).then(result => {
@@ -83,8 +100,23 @@ Description of the item. Optional.
 ##### `keywords`: Array<string>
 An array of keywords, assigned to the search item. Optional.
 
-##### `thumbnailURL`: string
-URL of the thumbnail, presented in the search results. Optional.
+##### `thumbnail`: string|int|object
+Thumbnail to be presented in the search results. The same format as `source` in
+the `Image` component. Optional.
+
+Examples:
+```js
+var localItem = {
+  <...>,
+  thumbnail: require('/react-native/img/favicon.png')
+};
+var remoteItem = {
+  <...>,
+  thumbnail: {uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}
+};
+```
+
+Please refer to [documentation](https://facebook.github.io/react-native/docs/image.html) for more details.
 
 ### Spotlight-specific keys
 

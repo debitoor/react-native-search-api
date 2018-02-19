@@ -1,5 +1,7 @@
 
 import { NativeModules, NativeEventEmitter } from 'react-native';
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+
 const SearchApiManager = NativeModules.SearchApiManager;
 
 const SPOTLIGHT_SEARCH_ITEM_TAPPED_EVENT = "spotlightSearchItemTapped";
@@ -24,8 +26,9 @@ const APP_HISTORY_SEARCH_ITEM_TAPPED = "appHistorySearchItemTapped";
  * #### keywords: Array<string>
  * An array of keywords, assigned to the search item. Optional.
  *
- * #### thumbnailURL: string
- * URL of the thumbnail, presented in the search results. Optional.
+ * #### thumbnail: string|object
+ * Image to be used as the thumbnail. Same as the `source` value of the `Image`
+ * view. Optional.
  *
  * ### Spotlight-specific keys
  *
@@ -55,6 +58,28 @@ class SearchApi extends NativeEventEmitter {
 
     constructor() {
         super(SearchApiManager);
+    }
+
+   /**
+    * Gets the initial spotlight item's identifier. Resoves to null
+    * in case the app was started otherwise.
+    *
+    * @NOTE A good place for calling this method is the component's
+    * `componentDidMount` override.
+    */
+    getInitialSpotlightItem(): Promise {
+        return SearchApiManager.getInitialSpotlightItem();
+    }
+
+   /**
+    * Gets the initial app history item's user info dictionary. Resolves to null
+    * in case the app was started otherwise.
+    *
+    * @NOTE A good place for calling this method is the component's
+    * `componentDidMount` override.
+    */
+    getInitialAppHistoryItem(): Promise {
+        return SearchApiManager.getInitialAppHistoryItem();
     }
 
    /**
@@ -118,17 +143,18 @@ class SearchApi extends NativeEventEmitter {
     * See the comment above this class for more info.
     */
     indexSpotlightItem(item: Object): Promise {
-        return SearchApiManager.indexItem(item);
+        return this.indexSpotlightItems([item]);
     }
 
     /**
      * Adds an array of new items to the spotlight index.
      *
-     * @param item An array with new items to be added.
+     * @param items An array with new items to be added.
      * See the comment above this class for more info.
      */
     indexSpotlightItems(items: Array): Promise {
-        return SearchApiManager.indexItems(items);
+        var copies = items.map(item => resolveItemThumbnail(item));
+        return SearchApiManager.indexItems(copies);
     }
 
     /**
@@ -164,9 +190,16 @@ class SearchApi extends NativeEventEmitter {
      * See the comment above this class for more info.
      */
     indexAppHistoryItem(item: Object): Promise {
-        return SearchApiManager.createUserActivity(item);
+        var itemCopy = resolveItemThumbnail(item);
+        return SearchApiManager.createUserActivity(itemCopy);
     }
 
+}
+
+function resolveItemThumbnail(item: Object): Object {
+    var itemCopy = JSON.parse(JSON.stringify(item));
+    itemCopy.thumbnail = resolveAssetSource(item.thumbnail);
+    return itemCopy;
 }
 
 export default new SearchApi();
