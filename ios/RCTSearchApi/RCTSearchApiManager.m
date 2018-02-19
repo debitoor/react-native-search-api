@@ -194,14 +194,14 @@ RCT_EXPORT_METHOD(createUserActivity:(NSDictionary *)item resolve:(RCTPromiseRes
         NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(image)];
         attributeSet.thumbnailData = imageData;
         completionBlock(attributeSet, nil);
-    } else if (item.rctsa_thumbnail && !item.rctsa_thumbnailName) {
-        [self loadImageFromSource:item.rctsa_thumbnail withCompletion:^(NSError *error, UIImage *image) {
-            if (error || !image) {
-                return completionBlock(nil, error ?: RCTErrorWithMessage(@"Could not load an image"));
-            }
-            attributeSet.thumbnailData = UIImagePNGRepresentation(image);
-            completionBlock(attributeSet, nil);
-        }];
+    // } else if (item.rctsa_thumbnail && !item.rctsa_thumbnailName) {
+    //     [self loadImageFromSource:item.rctsa_thumbnail withCompletion:^(NSError *error, UIImage *image) {
+    //         if (error || !image) {
+    //             return completionBlock(nil, error ?: RCTErrorWithMessage(@"Could not load an image"));
+    //         }
+    //         attributeSet.thumbnailData = UIImagePNGRepresentation(image);
+    //         completionBlock(attributeSet, nil);
+    //     }];
     } else {
         completionBlock(attributeSet, nil);
     }

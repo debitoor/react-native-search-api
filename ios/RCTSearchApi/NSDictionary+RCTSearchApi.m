@@ -22,9 +22,9 @@
     return self[@"keywords"];
 }
 
-- (RCTImageSource *)rctsa_thumbnail {
-    return [RCTConvert RCTImageSource:self[@"thumbnail"]];
-}
+// - (RCTImageSource *)rctsa_thumbnail {
+//     return [RCTConvert RCTImageSource:self[@"thumbnail"]];
+// }
 
 - (NSString *)rctsa_uniqueIdentifier {
     return self[@"uniqueIdentifier"];
